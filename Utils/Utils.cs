@@ -225,3 +225,44 @@ public class DirectoryMetadataComparer
     }
 
 }
+
+
+public class Utils
+{
+
+    /// <summary>
+    /// Reads the content of the specified file.
+    /// </summary>
+    /// <param name="filePath">Path of file to read. </param>
+    /// <returns>Filecontent as string, or null if file dne</returns>
+    static string? ReadFile(string filePath)
+    {
+        if (!File.Exists(filePath))
+        {
+            Debug.WriteLine("File not found. Please check the path and try again.");
+            return null;
+        }
+
+        return File.ReadAllText(filePath);
+
+    }
+
+    /// <summary>
+    /// Write/Overwrite content to file
+    /// </summary>
+    /// <param name="filePath">Path of file</param>
+    /// <param name="content">Content to write.</param>
+    static bool WriteToFile(string filePath, string content)
+    {
+        try
+        {
+            File.WriteAllText(filePath, content);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"An error occurred while writing to the file: {ex.Message}");
+            return false;
+        }
+    }
+}
