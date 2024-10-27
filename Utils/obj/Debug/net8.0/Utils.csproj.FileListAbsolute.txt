@@ -1,0 +1,11 @@
+/Users/amithabh_a/Projects/UtilsConsole/Utils/bin/Debug/net8.0/Utils.deps.json
+/Users/amithabh_a/Projects/UtilsConsole/Utils/bin/Debug/net8.0/Utils.dll
+/Users/amithabh_a/Projects/UtilsConsole/Utils/bin/Debug/net8.0/Utils.pdb
+/Users/amithabh_a/Projects/UtilsConsole/Utils/obj/Debug/net8.0/Utils.GeneratedMSBuildEditorConfig.editorconfig
+/Users/amithabh_a/Projects/UtilsConsole/Utils/obj/Debug/net8.0/Utils.AssemblyInfoInputs.cache
+/Users/amithabh_a/Projects/UtilsConsole/Utils/obj/Debug/net8.0/Utils.AssemblyInfo.cs
+/Users/amithabh_a/Projects/UtilsConsole/Utils/obj/Debug/net8.0/Utils.csproj.CoreCompileInputs.cache
+/Users/amithabh_a/Projects/UtilsConsole/Utils/obj/Debug/net8.0/Utils.dll
+/Users/amithabh_a/Projects/UtilsConsole/Utils/obj/Debug/net8.0/refint/Utils.dll
+/Users/amithabh_a/Projects/UtilsConsole/Utils/obj/Debug/net8.0/Utils.pdb
+/Users/amithabh_a/Projects/UtilsConsole/Utils/obj/Debug/net8.0/ref/Utils.dll
