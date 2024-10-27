@@ -11,6 +11,11 @@ public class FileContent
 {
     public string? FileName { get; set; }
     public string? SerializedContent { get; set; }
+
+    public override string ToString()
+    {
+        return $"FileName: {FileName ?? "N/A"}, Content Length: {SerializedContent?.Length ?? 0}";
+    }
 }
 
 
@@ -18,6 +23,11 @@ public class FileMetadata
 {
     public string? FileName { get; set; }
     public string? FileHash { get; set; }
+
+    public override string ToString()
+    {
+        return $"FileName: {FileName ?? "N/A"}, FileHash: {FileHash ?? "N/A"}";
+    }
 }
 
 /*
@@ -33,11 +43,12 @@ public class DirectoryMetadataGenerator
     /// Create metadata of directory
     /// </summary>
     /// <param name="directoryPath">Path of the directory</param>
-    public DirectoryMetadataGenerator(string directoryPath)
+    public DirectoryMetadataGenerator(string directoryPath = "C:/Temp")
     {
         if (!Directory.Exists(directoryPath))
         {
-            Console.WriteLine($"Directory does not exist: {directoryPath}");
+            Debug.WriteLine($"Directory does not exist: {directoryPath}");
+            Directory.CreateDirectory(directoryPath);
         }
 
         List<FileMetadata> metadata = CreateFileMetadata(directoryPath);

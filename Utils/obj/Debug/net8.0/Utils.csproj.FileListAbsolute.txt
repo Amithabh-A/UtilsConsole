@@ -9,3 +9,4 @@
 /Users/amithabh_a/Projects/UtilsConsole/Utils/obj/Debug/net8.0/refint/Utils.dll
 /Users/amithabh_a/Projects/UtilsConsole/Utils/obj/Debug/net8.0/Utils.pdb
 /Users/amithabh_a/Projects/UtilsConsole/Utils/obj/Debug/net8.0/ref/Utils.dll
+/Users/amithabh_a/Projects/UtilsConsole/Utils/obj/Debug/net8.0/Utils.sourcelink.json
