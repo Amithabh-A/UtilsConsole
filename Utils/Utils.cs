@@ -5,6 +5,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text.Json;
 using System.Diagnostics;
+using Networking.Serialization;
 
 
 public class FileContent
@@ -276,4 +277,31 @@ public class Utils
             return false;
         }
     }
+
+
+    /// <summary>
+    /// Serializes an object to its string representation.
+    /// </summary>
+    /// <typeparam name="T">The type of the object to serialize.</typeparam>
+    /// <param name="obj">The object to serialize.</param>
+    /// <returns>A string representation of the serialized object.</returns>
+    static string SerializeObject<T>(T obj)
+    {
+        ISerializer serializer = new Serializer();
+        return serializer.Serialize(obj);
+    }
+
+
+    /// <summary>
+    /// Deserializes a string back to an object of specified type.
+    /// </summary>
+    /// <typeparam name="T">The type of the object to deserialize into.</typeparam>
+    /// <param name="serializedData">The serialized string data.</param>
+    /// <returns>An instance of the specified type.</returns>
+    static T DeserializeObject<T>(string serializedData)
+    {
+        ISerializer serializer = new Serializer();
+        return serializer.Deserialize<T>(serializedData);
+    }
+
 }
