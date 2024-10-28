@@ -2,6 +2,16 @@
   "version": 3,
   "targets": {
     "net8.0": {
+      "DataPacket/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/DataPacket.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/DataPacket.dll": {}
+        }
+      },
       "Network/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
@@ -15,6 +25,11 @@
     }
   },
   "libraries": {
+    "DataPacket/1.0.0": {
+      "type": "project",
+      "path": "../../DataPacketConsole/DataPacket/DataPacket.csproj",
+      "msbuildProject": "../../DataPacketConsole/DataPacket/DataPacket.csproj"
+    },
     "Network/1.0.0": {
       "type": "project",
       "path": "../../SoftwareEngineering2024/Network/Network.csproj",
@@ -23,6 +38,7 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
+      "DataPacket >= 1.0.0",
       "Network >= 1.0.0"
     ]
   },
@@ -52,6 +68,9 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
+            "/Users/amithabh_a/Projects/DataPacketConsole/DataPacket/DataPacket.csproj": {
+              "projectPath": "/Users/amithabh_a/Projects/DataPacketConsole/DataPacket/DataPacket.csproj"
+            },
             "/Users/amithabh_a/Projects/SoftwareEngineering2024/Network/Network.csproj": {
               "projectPath": "/Users/amithabh_a/Projects/SoftwareEngineering2024/Network/Network.csproj"
             }

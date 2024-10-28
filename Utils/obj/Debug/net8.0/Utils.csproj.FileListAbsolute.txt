@@ -14,3 +14,5 @@
 /Users/amithabh_a/Projects/UtilsConsole/Utils/bin/Debug/net8.0/Network.pdb
 /Users/amithabh_a/Projects/UtilsConsole/Utils/obj/Debug/net8.0/Utils.csproj.AssemblyReference.cache
 /Users/amithabh_a/Projects/UtilsConsole/Utils/obj/Debug/net8.0/Utils.csproj.Up2Date
+/Users/amithabh_a/Projects/UtilsConsole/Utils/bin/Debug/net8.0/DataPacket.dll
+/Users/amithabh_a/Projects/UtilsConsole/Utils/bin/Debug/net8.0/DataPacket.pdb

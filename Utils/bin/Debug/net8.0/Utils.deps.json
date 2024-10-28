@@ -8,10 +8,19 @@
     ".NETCoreApp,Version=v8.0": {
       "Utils/1.0.0": {
         "dependencies": {
+          "DataPacket": "1.0.0",
           "Network": "1.0.0"
         },
         "runtime": {
           "Utils.dll": {}
+        }
+      },
+      "DataPacket/1.0.0": {
+        "runtime": {
+          "DataPacket.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       },
       "Network/1.0.0": {
@@ -26,6 +35,11 @@
   },
   "libraries": {
     "Utils/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "DataPacket/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

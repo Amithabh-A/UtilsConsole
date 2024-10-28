@@ -1,4 +1,4 @@
-﻿namespace Updater.Utils;
+﻿namespace Updater;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,28 +8,6 @@ using System.Diagnostics;
 using Networking.Serialization;
 
 
-public class FileContent
-{
-    public string? FileName { get; set; }
-    public string? SerializedContent { get; set; }
-
-    public override string ToString()
-    {
-        return $"FileName: {FileName ?? "N/A"}, Content Length: {SerializedContent?.Length ?? 0}";
-    }
-}
-
-
-public class FileMetadata
-{
-    public string? FileName { get; set; }
-    public string? FileHash { get; set; }
-
-    public override string ToString()
-    {
-        return $"FileName: {FileName ?? "N/A"}, FileHash: {FileHash ?? "N/A"}";
-    }
-}
 
 /*
  * ----------------- FileMetadataGenerator -----------------
@@ -44,7 +22,7 @@ public class DirectoryMetadataGenerator
     /// Create metadata of directory
     /// </summary>
     /// <param name="directoryPath">Path of the directory</param>
-    public DirectoryMetadataGenerator(string directoryPath = "C:/Temp")
+    public DirectoryMetadataGenerator(string directoryPath = @"C:\Temp")
     {
         if (!Directory.Exists(directoryPath))
         {
@@ -52,8 +30,7 @@ public class DirectoryMetadataGenerator
             Directory.CreateDirectory(directoryPath);
         }
 
-        List<FileMetadata> metadata = CreateFileMetadata(directoryPath);
-        _metadata = metadata;
+        _metadata = CreateFileMetadata(directoryPath);
     }
 
 
@@ -70,22 +47,17 @@ public class DirectoryMetadataGenerator
     /// <param name="directoryPath">Path of directory.</param>
     /// <param name="writeToFile">bool value to write metadata to file.</param>
     /// <returns>List of FileMetadata objects in the directory.</returns>
-    private static List<FileMetadata> CreateFileMetadata(string directoryPath)
+    private static List<FileMetadata> CreateFileMetadata(string directoryPath = @"C:\Temp")
     {
         List<FileMetadata> metadata = new List<FileMetadata>();
-        string metadataFilePath = Path.Combine(directoryPath, "metadata.json");
 
         foreach (string filePath in Directory.GetFiles(directoryPath))
         {
-            // Skip the metadata file itself
-            if (Path.GetFileName(filePath).Equals("metadata.json", StringComparison.OrdinalIgnoreCase))
-                continue;
 
-            string fileHash = ComputeFileHash(filePath);
             metadata.Add(new FileMetadata
             {
                 FileName = Path.GetFileName(filePath),
-                FileHash = fileHash
+                FileHash = ComputeFileHash(filePath)
             });
         }
 
@@ -115,6 +87,8 @@ public class DirectoryMetadataGenerator
 public class DirectoryMetadataComparer
 {
     private Dictionary<int, List<object>>? _differences;
+    private List<string> _uniqueServerFiles = new List<string>();
+    private List<string> _uniqueClientFiles = new List<string>();
 
 
     /// <summary>
@@ -127,6 +101,16 @@ public class DirectoryMetadataComparer
         _differences = CompareMetadata(metadataA, metadataB);
     }
 
+    public List<string> GetUniqueServerFiles()
+    {
+        return _uniqueServerFiles;
+    }
+
+
+    public List<string> GetUniqueClientFiles()
+    {
+        return _uniqueServerFiles;
+    }
 
     /// <summary>
     /// Get _differences
@@ -144,7 +128,7 @@ public class DirectoryMetadataComparer
     /// <param name="metadataA">Dir. A's metadata</param>
     /// <param name="metadataB">Dir. B's metadata</param>
     /// <returns>Dictionary containing differences, </returns>
-    private static Dictionary<int, List<object>> CompareMetadata(List<FileMetadata> metadataA, List<FileMetadata> metadataB)
+    private Dictionary<int, List<object>> CompareMetadata(List<FileMetadata> metadataA, List<FileMetadata> metadataB)
     {
         Dictionary<int, List<object>> differences = new Dictionary<int, List<object>>
         {
@@ -186,7 +170,7 @@ public class DirectoryMetadataComparer
     /// <param name="hashToFileA">Dir. A's Hash to file map</param>
     /// <param name="differences">differences dictionary</param>
     /// <returns> Differences dictionary</returns>
-    private static void CheckForRenamesAndMissingFiles(List<FileMetadata> metadataB, Dictionary<string, string> hashToFileA, Dictionary<int, List<object>> differences)
+    private void CheckForRenamesAndMissingFiles(List<FileMetadata> metadataB, Dictionary<string, string> hashToFileA, Dictionary<int, List<object>> differences)
     {
         foreach (FileMetadata fileB in metadataB)
         {
@@ -209,6 +193,7 @@ public class DirectoryMetadataComparer
                     { "FileName", fileB.FileName },
                     { "FileHash", fileB.FileHash }
                 });
+                _uniqueClientFiles.Add(fileB.FileName);
             }
         }
     }
@@ -221,7 +206,7 @@ public class DirectoryMetadataComparer
     /// <param name="hashToFileB">Dir. B's Hash to file map</param>
     /// <param name="differences">Differences dictionary</param>
     /// <returns> Differences dictionary</returns>
-    private static void CheckForOnlyInAFiles(List<FileMetadata> metadataA, Dictionary<string, string> hashToFileB, Dictionary<int, List<object>> differences)
+    private void CheckForOnlyInAFiles(List<FileMetadata> metadataA, Dictionary<string, string> hashToFileB, Dictionary<int, List<object>> differences)
     {
         foreach (FileMetadata fileA in metadataA)
         {
@@ -232,11 +217,12 @@ public class DirectoryMetadataComparer
                     { "FileName", fileA.FileName },
                     { "FileHash", fileA.FileHash }
                 });
+                _uniqueServerFiles.Add(fileA.FileName);
             }
         }
     }
-
 }
+
 
 
 public class Utils
@@ -247,7 +233,7 @@ public class Utils
     /// </summary>
     /// <param name="filePath">Path of file to read. </param>
     /// <returns>Filecontent as string, or null if file dne</returns>
-    static string? ReadFile(string filePath)
+    public static string? ReadFile(string filePath)
     {
         if (!File.Exists(filePath))
         {
@@ -259,12 +245,13 @@ public class Utils
 
     }
 
+
     /// <summary>
     /// Write/Overwrite content to file
     /// </summary>
     /// <param name="filePath">Path of file</param>
     /// <param name="content">Content to write.</param>
-    static bool WriteToFile(string filePath, string content)
+    public static bool WriteToFile(string filePath, string content)
     {
         try
         {
@@ -279,13 +266,12 @@ public class Utils
     }
 
 
-    /// <summary>
-    /// Serializes an object to its string representation.
+    /// <summary> Serializes an object to its string representation.
     /// </summary>
     /// <typeparam name="T">The type of the object to serialize.</typeparam>
     /// <param name="obj">The object to serialize.</param>
     /// <returns>A string representation of the serialized object.</returns>
-    static string SerializeObject<T>(T obj)
+    public static string SerializeObject<T>(T obj)
     {
         ISerializer serializer = new Serializer();
         return serializer.Serialize(obj);
@@ -298,10 +284,49 @@ public class Utils
     /// <typeparam name="T">The type of the object to deserialize into.</typeparam>
     /// <param name="serializedData">The serialized string data.</param>
     /// <returns>An instance of the specified type.</returns>
-    static T DeserializeObject<T>(string serializedData)
+    public static T DeserializeObject<T>(string serializedData)
     {
         ISerializer serializer = new Serializer();
         return serializer.Deserialize<T>(serializedData);
     }
+
+
+
+
+    /*
+     * ----------------- Application Level Implementations -----------------
+     */
+
+    /// <summary>
+    /// Generates serialized packet containing metadata of files in a directory.
+    /// </summary>
+    /// <returns>Serialized packet containing metadata of files in a directory.</returns>
+    public static string SerializedMetadataPacket()
+    {
+        DirectoryMetadataGenerator metadataGenerator = new DirectoryMetadataGenerator();
+
+        if (metadataGenerator == null)
+        {
+            throw new Exception("Failed to create DirectoryMetadataGenerator");
+        }
+
+        List<FileMetadata>? metadata = metadataGenerator.GetMetadata();
+        if (metadata == null)
+        {
+            throw new Exception("Failed to get metadata");
+        }
+
+        string serializedMetadata = Utils.SerializeObject(metadata);
+        FileContent fileContent = new FileContent("metadata.json", serializedMetadata);
+        List<FileContent> fileContents = new List<FileContent> { fileContent };
+
+        DataPacket dataPacket = new DataPacket(DataPacket.PacketType.Metadata, fileContents);
+        return SerializeObject(dataPacket);
+
+    }
+
+
+
+
 
 }
